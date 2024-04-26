@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:paddingHorizontal="30dp"
     android:paddingTop="50dp"
-    tools:context=".fragments.FragmentHome">
+    tools:context=".ui.home.HomeFragment">
 
     <TextView
         android:id="@+id/textView2"
