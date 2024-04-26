@@ -2,4 +2,23 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="bg_white">#FFF5F5F5</color>
+    <color name="grey_2">#FF6B6B6B</color>
+    <color name="grey_1">#FF979797</color>
+    <color name="grey_opac">#67E9E9E9</color>
+
+    <!--GRADIENT
+    <color name="gr_red">#FFE15D5D</color>
+    <color name="gr_magenta">#FFEB5EEE</color>
+    <color name="gr_gold">#FFD6B35C</color>
+    -->
+
+    <color name="primary_purple_2">#FF8F00FF</color>
+    <color name="primary_purple_1">#FFC400FF</color>
+    <color name="purple_0">#FFB6ABE3</color>
+
+    <color name="purple_2">#FF7977FF</color>
+    <color name="purple_1">#FFC68AFF</color>
+
+    <color name="yellow_1">#FFFFF500</color>
 </resources>

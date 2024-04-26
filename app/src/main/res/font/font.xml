@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="100"
+        android:font="@font/robotothin"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="100"
+        android:font="@font/robotothinitalic"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="300"
+        android:font="@font/robotolight"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="300"
+        android:font="@font/robotolightitalic"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/robotoregular"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/robotoitalic"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        android:font="@font/robotomedium"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        android:font="@font/robotomediumitalic"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        android:font="@font/robotobold"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        android:font="@font/robotobolditalic"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/robotoblack"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        android:font="@font/robotoblackitalic"/>
+</font-family>
