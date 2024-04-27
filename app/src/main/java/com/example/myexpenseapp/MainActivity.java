@@ -145,7 +145,13 @@ public class MainActivity extends AppCompatActivity {
                 myList.setCategory(category);
                 myList.setDescription(description);
 
-                Toast.makeText(MainActivity.this, "List has been added", Toast.LENGTH_LONG). show();
+                database.expenseDao().insert(myList);
+                expenseLists.clear();
+                expenseLists.addAll(database.expenseDao().getAll());
+                listAdapter.notifyDataSetChanged();
+
+
+                //Toast.makeText(MainActivity.this, "List has been added", Toast.LENGTH_LONG). show();
                 bottomSheetDialog.hide();
 
             }
