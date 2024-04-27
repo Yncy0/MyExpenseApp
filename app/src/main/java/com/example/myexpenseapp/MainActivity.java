@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String amount = txtAmount.getText().toString();
+                String amount = String.valueOf(txtAmount.getText());
                 String category = txtCategory.getText().toString();
                 String description = txtDescription.getText().toString();
 
