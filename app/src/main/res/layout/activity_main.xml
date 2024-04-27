@@ -28,9 +28,10 @@
         app:itemIconSize="24dp"
         app:itemIconTint="@color/purple_0"
         app:labelVisibilityMode="unlabeled"
+        android:elevation="1dp"
         app:menu="@menu/bottom_nav_menu">
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-
+            android:id="@+id/fab_add"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"

@@ -2,6 +2,9 @@ package com.example.myexpenseapp;
 
 import android.os.Bundle;
 
+import com.example.myexpenseapp.adapter.ExpenseListAdapter;
+import com.example.myexpenseapp.database.ExpenseDatabase;
+import com.example.myexpenseapp.database.ExpenseList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.activity.EdgeToEdge;
@@ -14,12 +17,24 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myexpenseapp.databinding.ActivityMainBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+
+    RecyclerView recyclerView;
+    ExpenseListAdapter listAdapter;
+    List<ExpenseList> expenseLists = new ArrayList<>();
+    ExpenseDatabase database;
+
+    FloatingActionButton fabAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        //Init Components
+        recyclerView = findViewById(R.id.recyclerview);
+        fabAdd = findViewById(R.id.fab_add);
+
+
+        //Bottom Nav
         BottomNavigationView navView = findViewById(R.id.bottomNavigationView);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
