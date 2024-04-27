@@ -145,10 +145,9 @@ public class MainActivity extends AppCompatActivity {
                 myList.setCategory(category);
                 myList.setDescription(description);
 
-//                Intent intent = new Intent();
-//                intent.putExtra("expense", myList);
-//                setResult(Activity.RESULT_OK, intent);
-//                finish();
+                Toast.makeText(MainActivity.this, "List has been added", Toast.LENGTH_LONG). show();
+                bottomSheetDialog.hide();
+
             }
         });
 
