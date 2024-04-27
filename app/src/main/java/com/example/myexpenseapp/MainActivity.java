@@ -1,15 +1,21 @@
 package com.example.myexpenseapp;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.myexpenseapp.adapter.ExpenseListAdapter;
+import com.example.myexpenseapp.database.ExpenseDao;
 import com.example.myexpenseapp.database.ExpenseDatabase;
 import com.example.myexpenseapp.database.ExpenseList;
+import com.example.myexpenseapp.listener.ExpenseListListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +28,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myexpenseapp.databinding.ActivityMainBinding;
@@ -38,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ExpenseListAdapter listAdapter;
+    ExpenseList myList;
     List<ExpenseList> expenseLists = new ArrayList<>();
     ExpenseDatabase database;
 
@@ -65,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerview);
         fabAdd = findViewById(R.id.fab_add);
 
+        database = ExpenseDatabase.getInstance(this);
+        expenseLists = (List<ExpenseList>) database.expenseDao().getAll();
+
+        //Recycler Function
+        updateRecycle(expenseLists);
+
 
         //FAB onClick
         fabAdd.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +101,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void updateRecycle(List<ExpenseList> list) {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        listAdapter = new ExpenseListAdapter(this, list, expenseListListener);
+        recyclerView.setAdapter(listAdapter);
+    }
+
+    private final ExpenseListListener expenseListListener = new ExpenseListListener() {
+        @Override
+        public void onClick(ExpenseList expenseList) {
+
+        }
+    }
+
     private void showDialog() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View view= LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet, null);
@@ -99,6 +127,30 @@ public class MainActivity extends AppCompatActivity {
         txtDescription = bottomSheetDialog.findViewById(R.id.txt_description);
         btnAdd = bottomSheetDialog.findViewById(R.id.btn_add);
         btnCancel = bottomSheetDialog.findViewById(R.id.btn_cancel);
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String amount = String.valueOf(txtAmount.getText());
+                String category = txtCategory.getText().toString();
+                String description = txtDescription.getText().toString();
+
+                if(amount.isEmpty() || category.isEmpty() || description.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please fill out the blanks", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                myList = new ExpenseList();
+                myList.setAmount(Integer.parseInt(amount));
+                myList.setCategory(category);
+                myList.setDescription(description);
+
+                Intent intent = new Intent();
+                intent.putExtra("expense", myList);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
