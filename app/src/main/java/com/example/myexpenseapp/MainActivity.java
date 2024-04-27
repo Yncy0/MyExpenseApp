@@ -1,6 +1,11 @@
 package com.example.myexpenseapp;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.myexpenseapp.adapter.ExpenseListAdapter;
 import com.example.myexpenseapp.database.ExpenseDatabase;
@@ -20,6 +25,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myexpenseapp.databinding.ActivityMainBinding;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -34,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     List<ExpenseList> expenseLists = new ArrayList<>();
     ExpenseDatabase database;
 
+    EditText txtAmount, txtCategory, txtDescription;
+    MaterialButton btnAdd, btnCancel;
     FloatingActionButton fabAdd;
 
     @Override
@@ -57,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
         fabAdd = findViewById(R.id.fab_add);
 
 
+        //FAB onClick
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
+
         //Bottom Nav
         BottomNavigationView navView = findViewById(R.id.bottomNavigationView);
         // Passing each menu ID as a set of Ids because each
@@ -66,6 +83,29 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+
+
+    }
+
+    private void showDialog() {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view= LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet, null);
+
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
+
+        txtAmount = bottomSheetDialog.findViewById(R.id.txt_amount);
+        txtCategory = bottomSheetDialog.findViewById(R.id.txt_category);
+        txtDescription = bottomSheetDialog.findViewById(R.id.txt_description);
+        btnAdd = bottomSheetDialog.findViewById(R.id.btn_add);
+        btnCancel = bottomSheetDialog.findViewById(R.id.btn_cancel);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.hide();
+            }
+        });
     }
 
 }

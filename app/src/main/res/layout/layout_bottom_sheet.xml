@@ -70,7 +70,7 @@
         android:showDividers="middle"
         android:paddingBottom="50dp">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add"
             android:layout_width="125dp"
             android:layout_height="48dp"
