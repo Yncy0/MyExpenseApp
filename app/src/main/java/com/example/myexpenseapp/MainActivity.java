@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     private final ExpenseListListener expenseListListener = new ExpenseListListener() {
         @Override
         public void onClick(ExpenseList expenseList) {
-
+            showDialog();
         }
     };
 

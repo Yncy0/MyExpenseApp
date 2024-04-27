@@ -16,5 +16,5 @@ public interface ExpenseDao {
     void insert(ExpenseList expenseList);
 
     @Query("SELECT * FROM expense_table")
-    LiveData<List<ExpenseList>> getAll();
+    List<ExpenseList> getAll();
 }
