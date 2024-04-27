@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(ExpenseList expenseList) {
 
         }
-    }
+    };
 
     private void showDialog() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
