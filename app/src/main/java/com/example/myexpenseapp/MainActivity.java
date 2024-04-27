@@ -145,10 +145,10 @@ public class MainActivity extends AppCompatActivity {
                 myList.setCategory(category);
                 myList.setDescription(description);
 
-                Intent intent = new Intent();
-                intent.putExtra("expense", myList);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+//                Intent intent = new Intent();
+//                intent.putExtra("expense", myList);
+//                setResult(Activity.RESULT_OK, intent);
+//                finish();
             }
         });
 
