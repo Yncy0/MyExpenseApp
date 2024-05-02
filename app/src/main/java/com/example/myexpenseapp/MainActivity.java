@@ -37,6 +37,7 @@ import com.example.myexpenseapp.databinding.ActivityMainBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ExpenseListAdapter listAdapter;
     ExpenseList myList;
+    ExpenseList selectedList;
     List<ExpenseList> expenseLists = new ArrayList<>();
     ExpenseDatabase database;
 
@@ -81,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         //Recycler Function
         updateRecycle(expenseLists);
 
-
         //FAB onClick
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
 
 
 
