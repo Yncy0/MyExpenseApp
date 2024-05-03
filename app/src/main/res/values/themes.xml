@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MyExpenseApp" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/purple_2</item>
-        <item name="colorOnPrimary">@color/bg_white</item>
+<!--        <item name="colorOnPrimary">@color/bg_white</item>-->
     </style>
 
     <style name="Theme.MyExpenseApp" parent="Base.Theme.MyExpenseApp" />
