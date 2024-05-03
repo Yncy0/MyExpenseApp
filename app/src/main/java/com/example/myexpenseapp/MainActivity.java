@@ -101,7 +101,21 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
 
+                selectedList = new ExpenseList();
+
+                selectedList = expenseLists.remove(position);
+
+                database.expenseDao().delete(selectedList);
+
+                Snackbar.make((View) recyclerView, "Item is deleted", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        expenseLists.add(position, selectedList);
+                        listAdapter.notifyDataSetChanged();
+                    }
+                }).show();
             }
         };
 
@@ -169,12 +183,12 @@ public class MainActivity extends AppCompatActivity {
                 database.expenseDao().insert(myList);
                 expenseLists.clear();
                 expenseLists.addAll(database.expenseDao().getAll());
-                listAdapter.notifyDataSetChanged();
+
 
 
                 //Toast.makeText(MainActivity.this, "List has been added", Toast.LENGTH_LONG). show();
                 bottomSheetDialog.hide();
-
+                listAdapter.notifyDataSetChanged();
             }
         });
 
