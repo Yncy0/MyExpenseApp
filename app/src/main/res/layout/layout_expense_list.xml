@@ -30,7 +30,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lbl_category"
-                android:layout_marginTop="10dp"
                 android:text="Description"
                 android:textSize="14sp"
                 android:fontFamily="@font/robotomedium"/>
