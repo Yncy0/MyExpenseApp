@@ -1,15 +1,8 @@
 package com.example.myexpenseapp;
 
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG;
-
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -86,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                showDialogAdd();
             }
         });
 
@@ -145,13 +138,13 @@ public class MainActivity extends AppCompatActivity {
     private final ExpenseListListener expenseListListener = new ExpenseListListener() {
         @Override
         public void onClick(ExpenseList expenseList) {
-            showDialog();
+            //showDialog();
         }
     };
 
-    private void showDialog() {
+    private void showDialogAdd() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View view= LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet, null);
+        View view= LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet_add, null);
 
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();
