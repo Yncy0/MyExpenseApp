@@ -13,6 +13,8 @@ import com.example.myexpenseapp.listener.ExpenseListListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -144,14 +146,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDialogAdd() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View view= LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet_add, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet_add, null);
 
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();
 
-        txtAmount = bottomSheetDialog.findViewById(R.id.txt_amount);
-        txtCategory = bottomSheetDialog.findViewById(R.id.txt_category);
-        txtDescription = bottomSheetDialog.findViewById(R.id.txt_description);
+        txtAmount = bottomSheetDialog.findViewById(R.id.txt_add_amount);
+        txtCategory = bottomSheetDialog.findViewById(R.id.txt_add_category);
+        txtDescription = bottomSheetDialog.findViewById(R.id.txt_add_description);
         btnAdd = bottomSheetDialog.findViewById(R.id.btn_add);
         btnCancel = bottomSheetDialog.findViewById(R.id.btn_cancel);
 
@@ -190,6 +192,16 @@ public class MainActivity extends AppCompatActivity {
                 bottomSheetDialog.hide();
             }
         });
+    }
+
+    private void showDialogEdit() {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet_edit, null);
+
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
+
+
     }
 
 }
