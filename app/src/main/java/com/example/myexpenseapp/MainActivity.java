@@ -48,8 +48,11 @@ public class MainActivity extends AppCompatActivity {
     ExpenseDatabase database;
 
     EditText txtAmount, txtCategory, txtDescription;
-    MaterialButton btnAdd, btnCancel;
+    MaterialButton btnAdd, btnEdit, btnCancel;
     FloatingActionButton fabAdd;
+
+    private String amount, category, description;
+    private Boolean isOldNote = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     private final ExpenseListListener expenseListListener = new ExpenseListListener() {
         @Override
         public void onClick(ExpenseList expenseList) {
-            //showDialog();
+            showDialogEdit();
         }
     };
 
@@ -160,16 +163,19 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String amount = String.valueOf(txtAmount.getText());
-                String category = txtCategory.getText().toString();
-                String description = txtDescription.getText().toString();
+                amount = String.valueOf(txtAmount.getText());
+                category = txtCategory.getText().toString();
+                description = txtDescription.getText().toString();
 
                 if(amount.isEmpty() || category.isEmpty() || description.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Please fill out the blanks", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                myList = new ExpenseList();
+                if (!isOldNote) {
+                    myList = new ExpenseList();
+                }
+
                 myList.setAmount(Integer.parseInt(amount));
                 myList.setCategory(category);
                 myList.setDescription(description);
@@ -201,6 +207,33 @@ public class MainActivity extends AppCompatActivity {
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();
 
+        txtAmount = bottomSheetDialog.findViewById(R.id.txt_edit_amount);
+        txtCategory = bottomSheetDialog.findViewById(R.id.txt_edit_amount);
+        txtDescription = bottomSheetDialog.findViewById(R.id.txt_edit_amount);
+        btnEdit = bottomSheetDialog.findViewById(R.id.btn_edit);
+        btnCancel = bottomSheetDialog.findViewById(R.id.btn_cancel);
+
+        myList = new ExpenseList();
+        txtAmount.setText(String.valueOf(myList.getAmount()));
+        txtCategory.setText(myList.getCategory());
+        txtDescription.setText(myList.getDescription());
+        isOldNote = true;
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                database.expenseDao().update(myList);
+                expenseLists.clear();
+                expenseLists.addAll(database.expenseDao().getAll());
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.hide();
+            }
+        });
 
     }
 

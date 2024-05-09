@@ -70,7 +70,7 @@
         android:paddingBottom="50dp">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_add"
+            android:id="@+id/btn_edit"
             android:layout_width="125dp"
             android:layout_height="48dp"
             android:text="Edit"
