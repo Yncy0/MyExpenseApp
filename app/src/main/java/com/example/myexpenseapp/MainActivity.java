@@ -1,5 +1,7 @@
 package com.example.myexpenseapp;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -12,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.myexpenseapp.adapter.ExpenseListAdapter;
-import com.example.myexpenseapp.database.ExpenseDao;
 import com.example.myexpenseapp.database.ExpenseDatabase;
 import com.example.myexpenseapp.database.ExpenseList;
 import com.example.myexpenseapp.listener.ExpenseListListener;
@@ -44,8 +45,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
-
     RecyclerView recyclerView;
     ExpenseListAdapter listAdapter;
     ExpenseList myList;
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        com.example.myexpenseapp.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container), (v, insets) -> {
@@ -106,16 +105,18 @@ public class MainActivity extends AppCompatActivity {
                 selectedList = new ExpenseList();
 
                 selectedList = expenseLists.remove(position);
-
                 database.expenseDao().delete(selectedList);
-
-                Snackbar.make((View) recyclerView, "Item is deleted", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                Snackbar.make((View) recyclerView, "Item is deleted", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         expenseLists.add(position, selectedList);
+                        database.expenseDao().insert(selectedList);
+                        //expenseLists.addAll(position, database.expenseDao().getAll());
                         listAdapter.notifyDataSetChanged();
+
                     }
                 }).show();
+
             }
         };
 
