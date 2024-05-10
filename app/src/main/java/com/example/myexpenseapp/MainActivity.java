@@ -214,10 +214,14 @@ public class MainActivity extends AppCompatActivity {
         btnCancel = bottomSheetDialog.findViewById(R.id.btn_cancel);
 
         myList = new ExpenseList();
-        txtAmount.setText(String.valueOf(myList.getAmount()));
-        txtCategory.setText(myList.getCategory());
-        txtDescription.setText(myList.getDescription());
-        isOldNote = true;
+        try {
+            txtAmount.setText(String.valueOf(myList.getAmount()));
+            txtCategory.setText(myList.getCategory().toString());
+            txtDescription.setText(myList.getDescription().toString());
+            isOldNote = true;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
