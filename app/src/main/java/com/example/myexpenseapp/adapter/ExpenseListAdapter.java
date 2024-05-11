@@ -37,7 +37,6 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
         holder.lblAmount.setText(String.valueOf(expenseLists.get(position).getAmount()));
-        //holder.lblAmount.setSelected(true);
         holder.lblCategory.setText(expenseLists.get(position).getCategory());
         holder.lblDescription.setText(expenseLists.get(position).getDescription());
 

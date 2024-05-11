@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ExpenseListAdapter listAdapter;
     ExpenseList myList;
-    ExpenseList selectedList;
     List<ExpenseList> expenseLists = new ArrayList<>();
     ExpenseDatabase database;
 
@@ -84,9 +83,60 @@ public class MainActivity extends AppCompatActivity {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogAdd();
+                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this);
+                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_bottom_sheet_add, null);
+
+                bottomSheetDialog.setContentView(view);
+                bottomSheetDialog.show();
+
+                txtAmount = bottomSheetDialog.findViewById(R.id.txt_add_amount);
+                txtCategory = bottomSheetDialog.findViewById(R.id.txt_add_category);
+                txtDescription = bottomSheetDialog.findViewById(R.id.txt_add_description);
+                btnAdd = bottomSheetDialog.findViewById(R.id.btn_add);
+                btnCancel = bottomSheetDialog.findViewById(R.id.btn_cancel);
+
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        amount = String.valueOf(txtAmount.getText());
+                        category = txtCategory.getText().toString();
+                        description = txtDescription.getText().toString();
+
+                        if(amount.isEmpty() || category.isEmpty() || description.isEmpty()) {
+                            Toast.makeText(MainActivity.this, "Please fill out the blanks", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        if (!isOldNote) {
+                            myList = new ExpenseList();
+                        }
+
+                        myList.setAmount(Integer.parseInt(amount));
+                        myList.setCategory(category);
+                        myList.setDescription(description);
+
+                        database.expenseDao().insert(myList);
+                        expenseLists.clear();
+                        expenseLists.addAll(database.expenseDao().getAll());
+
+
+
+                        //Toast.makeText(MainActivity.this, "List has been added", Toast.LENGTH_LONG). show();
+                        bottomSheetDialog.hide();
+                        listAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog.hide();
+                    }
+                });
             }
         });
+
+
 
 
         //ItemTouchHelper
@@ -100,15 +150,15 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
 
-                selectedList = new ExpenseList();
+                myList = new ExpenseList();
 
-                selectedList = expenseLists.remove(position);
-                database.expenseDao().delete(selectedList);
+                myList = expenseLists.remove(position);
+                database.expenseDao().delete(myList);
                 Snackbar.make((View) recyclerView, "Item is deleted", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        expenseLists.add(position, selectedList);
-                        database.expenseDao().insert(selectedList);
+                        expenseLists.add(position, myList);
+                        database.expenseDao().insert(myList);
                         //expenseLists.addAll(position, database.expenseDao().getAll());
                         listAdapter.notifyDataSetChanged();
 
@@ -133,112 +183,70 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
     }
 
+    private final ExpenseListListener expenseListListener = new ExpenseListListener() {
+        @Override
+        public void onClick(ExpenseList expenseList) {
+            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this);
+            View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_bottom_sheet_edit, null);
+
+            bottomSheetDialog.setContentView(view);
+            bottomSheetDialog.show();
+
+            txtAmount = bottomSheetDialog.findViewById(R.id.txt_edit_amount);
+            txtCategory = bottomSheetDialog.findViewById(R.id.txt_edit_category);
+            txtDescription = bottomSheetDialog.findViewById(R.id.txt_edit_description);
+            btnEdit = bottomSheetDialog.findViewById(R.id.btn_edit);
+            btnCancel = bottomSheetDialog.findViewById(R.id.btn_cancel);
+
+            myList = new ExpenseList();
+            try {
+                txtAmount.setText(String.valueOf(myList.getAmount()).toString());
+                txtCategory.setText(myList.getCategory().toString());
+                txtDescription.setText(myList.getDescription().toString());
+//                txtAmount.setText(String.valueOf(1000));
+//                txtCategory.setText("HALLO");
+//                txtDescription.setText("TITE");
+                isOldNote = true;
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    amount = String.valueOf(txtAmount.getText());
+//                    category = txtCategory.getText().toString();
+//                    description = txtDescription.getText().toString();
+//
+//                    myList.setAmount(Integer.parseInt(amount));
+//                    myList.setCategory(category);
+//                    myList.setDescription(description);
+
+
+                    database.expenseDao().update(myList);
+                    expenseLists.clear();
+                    expenseLists.addAll(database.expenseDao().getAll());
+
+                    bottomSheetDialog.hide();
+                    listAdapter.notifyDataSetChanged();
+                }
+            });
+
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bottomSheetDialog.hide();
+                }
+            });
+
+        }
+    };
+
     private void updateRecycle(List<ExpenseList> list) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         listAdapter = new ExpenseListAdapter(this, list, expenseListListener);
         recyclerView.setAdapter(listAdapter);
-    }
-
-    private final ExpenseListListener expenseListListener = new ExpenseListListener() {
-        @Override
-        public void onClick(ExpenseList expenseList) {
-            showDialogEdit();
-        }
-    };
-
-    private void showDialogAdd() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet_add, null);
-
-        bottomSheetDialog.setContentView(view);
-        bottomSheetDialog.show();
-
-        txtAmount = bottomSheetDialog.findViewById(R.id.txt_add_amount);
-        txtCategory = bottomSheetDialog.findViewById(R.id.txt_add_category);
-        txtDescription = bottomSheetDialog.findViewById(R.id.txt_add_description);
-        btnAdd = bottomSheetDialog.findViewById(R.id.btn_add);
-        btnCancel = bottomSheetDialog.findViewById(R.id.btn_cancel);
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                amount = String.valueOf(txtAmount.getText());
-                category = txtCategory.getText().toString();
-                description = txtDescription.getText().toString();
-
-                if(amount.isEmpty() || category.isEmpty() || description.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Please fill out the blanks", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                if (!isOldNote) {
-                    myList = new ExpenseList();
-                }
-
-                myList.setAmount(Integer.parseInt(amount));
-                myList.setCategory(category);
-                myList.setDescription(description);
-
-                database.expenseDao().insert(myList);
-                expenseLists.clear();
-                expenseLists.addAll(database.expenseDao().getAll());
-
-
-
-                //Toast.makeText(MainActivity.this, "List has been added", Toast.LENGTH_LONG). show();
-                bottomSheetDialog.hide();
-                listAdapter.notifyDataSetChanged();
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.hide();
-            }
-        });
-    }
-
-    private void showDialogEdit() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_bottom_sheet_edit, null);
-
-        bottomSheetDialog.setContentView(view);
-        bottomSheetDialog.show();
-
-        txtAmount = bottomSheetDialog.findViewById(R.id.txt_edit_amount);
-        txtCategory = bottomSheetDialog.findViewById(R.id.txt_edit_amount);
-        txtDescription = bottomSheetDialog.findViewById(R.id.txt_edit_amount);
-        btnEdit = bottomSheetDialog.findViewById(R.id.btn_edit);
-        btnCancel = bottomSheetDialog.findViewById(R.id.btn_cancel);
-
-        myList = new ExpenseList();
-        try {
-            txtAmount.setText(String.valueOf(myList.getAmount()));
-            txtCategory.setText(myList.getCategory().toString());
-            txtDescription.setText(myList.getDescription().toString());
-            isOldNote = true;
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                database.expenseDao().update(myList);
-                expenseLists.clear();
-                expenseLists.addAll(database.expenseDao().getAll());
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.hide();
-            }
-        });
-
     }
 
 }
